@@ -1,0 +1,15 @@
+@keyframes buttonAnimation {
+  from {
+    scale: 1;
+  }
+  30% {
+    scale: 1.5;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+button.animation {
+  animation: buttonAnimation 0.25s;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "code-share",
+  "version": "1.0.0",
+  "description": "Template",
+  "main": "index.js",
+  "scripts": {
+    "pretty-quick": "pretty-quick",
+    "start:dev-v": "live-server ./front-end --port=5000 --verbose",
+    "start:dev": "live-server ./front-end --port=5000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jonny-exe/code-share.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jonny-exe/code-share/issues"
+  },
+  "homepage": "https://github.com/Jonny-exe/code-share#readme",
+  "dependencies": {
+    "husky": "^4.3.7",
+    "live-server": "^1.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
+  }
+}

@@ -1,0 +1,86 @@
+@import "./animations.css";
+body {
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
+  --speed: 500ms;
+  --primaryColor: white;
+  --secondaryColor: #15202b;
+  --thirdColor: #1da1f2;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  margin: 0%;
+  font-weight: bold;
+  overflow: hidden;
+  color: var(--primaryColor);
+  background-color: var(--secondaryColor);
+}
+
+button {
+  background-color: var(--primaryColor);
+  color: var(--secondaryColor);
+  border-radius: 5px;
+  height: 2vmax;
+  border: none;
+}
+
+button:hover {
+  background-color: var(--thirdColor);
+  color: var(--primaryColor);
+}
+
+input[type="text"] {
+  border-radius: 5px;
+}
+
+textarea {
+  border-radius: 5px;
+  -webkit-appearance: none;
+  width: 30%;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  padding: 0.5%;
+  border: 3px solid white;
+}
+
+textarea:focus {
+  border-color: var(--thirdColor);
+}
+
+#sendMessageInputsWrapper {
+  display: flex;
+  vertical-align: middle;
+  justify-content: center;
+  padding: 1%;
+}
+
+hr {
+  margin: 1%;
+  margin-left: 2%;
+  margin-right: 2%;
+  color: white;
+}
+
+.sendMessageInputs {
+  align-self: center;
+  height: 4vmax;
+  /* -webkit-appearance: none; */
+  /* border: none; */
+  margin: 1%;
+}
+
+button.sendMessageInputs {
+  width: 5%;
+}
+
+.messageButtonsWrapper {
+  margin-right: 3%;
+  text-align: right;
+}
+
+.messageButtons {
+  height: 30%;
+}
