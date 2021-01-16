@@ -17,9 +17,10 @@ const sendMessage = async () => {
 }
 
 const init = async () => {
-  functions.renderMessages()
+  // functions.renderMessages()
   setButtonEventListeners()
-  await db.insertMessage("LOLOL")
+  const messages = await db.getMessages()
+  functions.renderMessages(messages)
 }
 
 init()

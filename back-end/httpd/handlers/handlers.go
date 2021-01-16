@@ -39,3 +39,27 @@ func InsertMessage(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(http.StatusOK)
 	return
 }
+
+//GetMessages ...
+func GetMessages(w http.ResponseWriter, r *http.Request) {
+	db := db.GetConnection()
+	defer db.Close()
+	res, err := db.Query("select text from messages")
+	defer res.Close()
+	if err != nil {
+		log.Fatal("Error gettings messages: ", err)
+	}
+
+	var messages []string
+	for res.Next() {
+		var message string
+		err := res.Scan(&message)
+		messages = append(messages, message)
+
+		if err != nil {
+			log.Fatal("Error getting messages: ", err)
+		}
+	}
+	json.NewEncoder(w).Encode(messages)
+	return
+}

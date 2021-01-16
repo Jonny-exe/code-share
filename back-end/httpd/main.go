@@ -20,6 +20,7 @@ func handleRequest() error {
 	myRouter := mux.NewRouter().StrictSlash(true)
 	myRouter.HandleFunc("/test", handlers.Test).Methods("POST", "OPTIONS")
 	myRouter.HandleFunc("/insertMessage", handlers.InsertMessage).Methods("POST", "OPTIONS")
+	myRouter.HandleFunc("/getMessages", handlers.GetMessages).Methods("GET", "OPTIONS")
 	c := cors.New(cors.Options{
 		// AllowedOrigins: []string{"http://localhost:5000"},
 		AllowedOrigins: []string{"http://127.0.0.1:5000"},
