@@ -1,7 +1,7 @@
 import * as env from "../../env.js"
 const url = `http://localhost:${env.SERVER_PORT}`
 export const insertMessage = async (messageText) => {
-  console.log(url)
+  console.log(messageText)
   const body = {
     text: messageText,
   }

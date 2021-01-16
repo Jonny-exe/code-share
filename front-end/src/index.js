@@ -8,7 +8,12 @@ const setButtonEventListeners = () => {
     })
   })
 
-  document.querySelector("#sendMessageButton")
+  functions.$("button.sendMessageInputs").addEventListener("click", sendMessage)
+}
+
+const sendMessage = async () => {
+  const text = functions.$("textarea.sendMessageInputs").value
+  await db.insertMessage(text)
 }
 
 const init = async () => {
@@ -17,4 +22,4 @@ const init = async () => {
   await db.insertMessage("LOLOL")
 }
 
-await init()
+init()

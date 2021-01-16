@@ -19,3 +19,7 @@ export const renderMessages = (items) => {
   const messages = createMessages()
   appendMessages(messages)
 }
+
+export const $ = (item) => {
+  return document.querySelector(item)
+}
