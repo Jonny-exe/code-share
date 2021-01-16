@@ -1,4 +1,4 @@
-import * as consts from "../consts/consts.js"
+import * as consts from "./consts/consts.js"
 export const renderMessages = (items) => {
   items = [{ text: "Hi" }, { text: "añlskdjf" }]
 

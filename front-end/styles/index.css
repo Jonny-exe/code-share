@@ -1,4 +1,6 @@
+/* @import "../../node_modules/@fortawesome/fontawesome-free/css/all.css"; */
 @import "./animations.css";
+
 body {
   height: 100vh;
   width: 100vw;

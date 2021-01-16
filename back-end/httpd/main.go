@@ -8,8 +8,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/Jonny-exe/web-maker/web-maker-server/httpd/filecreator"
-	"github.com/Jonny-exe/web-maker/web-maker-server/httpd/handler"
+	"github.com/Jonny-exe/code-share/back-end/httpd/db"
+	"github.com/Jonny-exe/code-share/back-end/httpd/handlers"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -18,18 +18,11 @@ import (
 
 func handleRequest() error {
 	myRouter := mux.NewRouter().StrictSlash(true)
-	myRouter.HandleFunc("/insertTokenRecovery", handler.InsertTokenRecovery).Methods("POST", "OPTIONS")
-	myRouter.HandleFunc("/updateTokenObject", handler.UpdateTokenObject).Methods("POST", "OPTIONS")
-	myRouter.HandleFunc("/insertTokenObject", handler.InsertTokenObject).Methods("POST", "OPTIONS")
-	myRouter.HandleFunc("/getTokenFromRecovery", handler.GetTokenFromRecovery).Methods("POST", "OPTIONS")
-	myRouter.HandleFunc("/getObjectFromToken", handler.GetObjectFromToken).Methods("POST", "OPTIONS")
-	myRouter.HandleFunc("/exportIntoHTML", handler.ExportIntoHTML).Methods("POST", "OPTIONS")
-	myRouter.HandleFunc("/removeFile", handler.RemoveFile).Methods("POST", "OPTIONS")
-	myRouter.HandleFunc("/doesRecoveryKeyExist", handler.DoesRecoveryKeyExist).Methods("POST", "OPTIONS")
-	myRouter.HandleFunc("/test", handler.Test).Methods("POST", "OPTIONS")
-
+	myRouter.HandleFunc("/test", handlers.Test).Methods("POST", "OPTIONS")
+	myRouter.HandleFunc("/insertMessage", handlers.InsertMessage).Methods("POST", "OPTIONS")
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"https://localhost:5000"},
+		// AllowedOrigins: []string{"http://localhost:5000"},
+		AllowedOrigins: []string{"http://127.0.0.1:5000"},
 		// AllowedOrigins:   []string{"*"},
 		AllowCredentials: false,
 		AllowedMethods:   []string{"POST", "GET", "OPTIONS"},
@@ -40,7 +33,6 @@ func handleRequest() error {
 		Debug: false,
 	})
 
-	var port string = os.Getenv("SERVE_PORT")
 	dir := os.Getenv("CODE_SHARE_ENV")
 	log.Println("Env variable CODE_SHARE_ENV is: ", dir)
 	if dir == "" {
@@ -48,10 +40,13 @@ func handleRequest() error {
 		log.Println("Error: Set it like: export GO_MESSAGES_DIR=\"/home/user/Documents/GitHub/go-server/httpd\"")
 	}
 
-	enverr := godotenv.Load(dir + "/.env")
+	enverr := godotenv.Load(dir)
 	if enverr != nil {
 		log.Println("Error loading .env file: ", enverr)
 	}
+
+	var port string = os.Getenv("SERVER_PORT")
+
 	PORT, err := strconv.Atoi(port)
 	if err != nil {
 		log.Fatal("Error converting string to number: ", err)
@@ -73,9 +68,6 @@ func main() {
 }
 
 func connect() {
-	filecreator.GetTempFilesDir()
-	handler.GetDirs()
-	handler.Connect()
+	db.GetDirs()
+	db.Connect()
 }
-
-// tempFilesWipe is used to remove all the files that arent used and have not been removed because the user closed the browser

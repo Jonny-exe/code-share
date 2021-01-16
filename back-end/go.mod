@@ -1,4 +1,4 @@
-module code-share
+module github.com/Jonny-exe/code-share/back-end
 
 go 1.14
 

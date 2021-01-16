@@ -6,7 +6,8 @@
   "scripts": {
     "pretty-quick": "pretty-quick",
     "start:dev-v": "live-server ./front-end --port=5000 --verbose",
-    "start:dev": "live-server ./front-end --port=5000"
+    "start:dev": "live-server ./front-end --port=5000; nodemon --exec go run ./back-end/httpd/main.go --signal SIGTERM",
+    "start-server:dev": "nodemon --exec go run ./back-end/httpd/main.go --signal SIGTERM"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/Jonny-exe/code-share#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "husky": "^4.3.7",
     "live-server": "^1.2.1"
   },
