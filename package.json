@@ -7,7 +7,9 @@
     "pretty-quick": "pretty-quick",
     "start:dev-v": "live-server ./front-end --port=5000 --verbose",
     "start:dev": "live-server ./front-end --port=5000; nodemon --exec go run ./back-end/httpd/main.go --signal SIGTERM",
-    "start-server:dev": "nodemon --exec go run ./back-end/httpd/main.go --signal SIGTERM"
+    "start-server:dev": "nodemon --exec go run ./back-end/httpd/main.go --signal SIGTERM",
+    "install-back": "pip install -r requirements.txt",
+    "start-back:dev": "./back-end/bootstrap.sh"
   },
   "repository": {
     "type": "git",
