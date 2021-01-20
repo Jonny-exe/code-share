@@ -1,7 +1,9 @@
 import * as db from "./db/db.js"
 import * as functions from "./functions.js"
+
 const setButtonEventListeners = () => {
-  document.querySelectorAll("button").forEach((item) => {
+  const buttons = document.querySelectorAll("button")
+  buttons.forEach((item) => {
     item.addEventListener("click", (event) => {
       item.classList.add("animation")
       setTimeout(() => item.classList.remove("animation"), 500)
@@ -17,10 +19,8 @@ const sendMessage = async () => {
 }
 
 const init = async () => {
-  // functions.renderMessages()
   setButtonEventListeners()
   const messages = await db.getMessages()
   functions.renderMessages(messages)
 }
-
 init()

@@ -2,8 +2,8 @@
 @import "./animations.css";
 
 body {
+  -webkit-appearance: none;
   height: 100vh;
-  width: 100vw;
   text-align: center;
   --speed: 500ms;
   --primaryColor: white;
@@ -14,7 +14,7 @@ body {
     sans-serif;
   margin: 0%;
   font-weight: bold;
-  overflow: hidden;
+  overflow: auto;
   color: var(--primaryColor);
   background-color: var(--secondaryColor);
 }
@@ -56,7 +56,6 @@ textarea:focus {
   display: flex;
   vertical-align: middle;
   justify-content: center;
-  padding: 1%;
 }
 
 hr {
@@ -85,4 +84,15 @@ button.sendMessageInputs {
 
 .messageButtons {
   height: 30%;
+  color: var(--primaryColor);
+  background-color: var(--secondaryColor);
+}
+
+.message {
+  padding: 0.5%;
+  text-align: left;
+  border-radius: 10px;
+  margin: 1%;
+  color: var(--secondaryColor);
+  background-color: white;
 }

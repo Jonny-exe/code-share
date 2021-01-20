@@ -1,5 +1,5 @@
 import * as env from "../../env.js"
-const url = `http://localhost:${env.SERVER_PORT}`
+const url = `http://localhost:${env.SERVER_PORT}/`
 export const insertMessage = async (messageText) => {
   const body = {
     text: messageText,
@@ -9,7 +9,7 @@ export const insertMessage = async (messageText) => {
     method: "POST",
     body: JSON.stringify(body),
   }
-  const response = await fetch(url + "/insertMessage", options)
+  const response = await fetch(url + "insertMessage", options)
   const json = await response.json()
   return json
 }
@@ -18,7 +18,21 @@ export const getMessages = async () => {
   const options = {
     method: "GET",
   }
-  const response = await fetch(url + "/getMessages", options)
+  const response = await fetch(url + "getMessages", options)
+  const json = await response.json()
+  return json
+}
+
+export const addLike = async (messageId) => {
+  const body = {
+    messageId: messageId,
+    add: true,
+  }
+  const options = {
+    method: "POST",
+    body: JSON.stringify(body),
+  }
+  const response = await fetch(url + "addLike", options)
   const json = await response.json()
   return json
 }
