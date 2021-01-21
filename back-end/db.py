@@ -18,21 +18,27 @@ except mariadb.Error as e:
 # Get Cursor
 cur = conn.cursor()
 
+
 def get_current_likes(id):
     cur.execute("select likes from messages where id=?", (id,))
     return cur.fetchone()[0]
 
+
 def get_messages():
-    cur.execute("select text, likes, id from messages limit 30")
+    cur.execute(
+        "select text, likes, id from messages ORDER BY id DESC LIMIT 30")
     return cur.fetchall()
 
 
 def add_like(id, newLikes):
-    cur.execute("update messages set likes=? where id=?", (newLikes,id))
+    cur.execute("update messages set likes=? where id=?", (newLikes, id))
+
 
 def get_current_files(id):
     cur.execute("select likes from messages where id=?", (id))
     return cur.fetchone()[0]
-        
+
+
 def insert_message(text):
-    cur.execute("insert into messages(text,likes) values(?,?)",(text, 0))
+    cur.execute("insert into messages(text,likes) values(?,?)", (text, 0))
+    conn.commit()

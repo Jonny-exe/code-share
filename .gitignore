@@ -1,5 +1,5 @@
 node_modules
 .env
 env.js
-back-end/httpd/__pycache__
-back-end/httpd/classifier
+back-end/__pycache__
+back-end/classifier

@@ -8,8 +8,11 @@ export const insertMessage = async (messageText) => {
   const options = {
     method: "POST",
     body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
   }
-  const response = await fetch(url + "insertMessage", options)
+  const response = await fetch(url + "insert_message", options)
   const json = await response.json()
   return json
 }
@@ -18,21 +21,20 @@ export const getMessages = async () => {
   const options = {
     method: "GET",
   }
-  const response = await fetch(url + "getMessages", options)
+  const response = await fetch(url + "get_messages", options)
   const json = await response.json()
-  return json
+  return json.messages
 }
 
 export const addLike = async (messageId) => {
   const body = {
-    messageId: messageId,
-    add: true,
+    id: messageId,
   }
   const options = {
     method: "POST",
     body: JSON.stringify(body),
   }
-  const response = await fetch(url + "addLike", options)
+  const response = await fetch(url + "add_like", options)
   const json = await response.json()
   return json
 }

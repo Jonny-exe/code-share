@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "pretty-quick": "pretty-quick",
-    "start:dev-v": "live-server ./front-end --port=5000 --verbose",
-    "start:dev": "live-server ./front-end --port=5000; nodemon --exec go run ./back-end/httpd/main.go --signal SIGTERM",
+    "start:dev-v": "(live-server ./front-end --port=5000 --verbose)",
+    "start:dev": "(live-server ./front-end --port=5000)",
+    "start-all:dev": "(npm run start:dev&) && npm run start-back:dev",
     "start-server:dev": "nodemon --exec go run ./back-end/httpd/main.go --signal SIGTERM",
     "install-back": "pip install -r requirements.txt",
-    "start-back:dev": "./back-end/bootstrap.sh"
+    "start-back:dev": "./bootstrap.sh"
   },
   "repository": {
     "type": "git",

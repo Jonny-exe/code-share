@@ -1,4 +1,4 @@
-import * as consts from "./consts/consts.js"
+// import * as consts from "./consts/consts.js"
 import * as db from "./db/db.js"
 export const renderMessages = (items) => {
   const createMessages = () => {
@@ -21,7 +21,6 @@ export const renderMessages = (items) => {
 
     const like = async (id) => {
       await db.addLike(id)
-      // await db.
     }
   }
 

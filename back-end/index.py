@@ -7,15 +7,16 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route("/")
+@cross_origin()
 def hello_world():
     return "Hello, World!"
 
 
 @app.route("/add_row", methods=["POST"])
+@cross_origin()
 def add_income():
     json = request.get_json()
     csv_f.add_row(dict(json))
@@ -23,8 +24,9 @@ def add_income():
 
 
 @app.route("/get_current_likes", methods=["POST"])
+@cross_origin()
 def get_current_likes():
-    req = request.json
+    req = request.get_json(force=True)
     db_result = db.get_current_likes(req["id"])
     print(db_result)
     result = {"current_likes": db_result}
@@ -32,8 +34,12 @@ def get_current_likes():
 
 
 @app.route("/insert_message", methods=["POST"])
+@cross_origin()
 def insert_message():
-    req = request.json
+    req = request.get_json(force=True)
+    print("req: ", request.get_json())
+    if req is None:
+        return {'status': 500}
     db.insert_message(req["text"])
     return {"status": 200}
 
@@ -56,8 +62,10 @@ def get_messages():
 
 
 @app.route("/add_like", methods=["POST"])
+@cross_origin()
 def add_like():
-    req = request.json
+    req = request.get_json(force=True)
+    print("req: ", req)
     id = req['id']
     newLikes = db.get_current_likes(id) + 1
     print(newLikes)
