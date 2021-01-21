@@ -1,15 +1,13 @@
-# index.py
-from flask import Flask, jsonify, request
+# hello.py
 import csv_funcs as csv_f
-
 # import tensor_funcs as tensor_f
 import db
+from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-
-print("Hello")
-
-incomes = [{"description": "salary", "amount": 5000}]
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route("/")
@@ -41,6 +39,7 @@ def insert_message():
 
 
 @app.route("/get_messages")
+@cross_origin()
 def get_messages():
     db_result = db.get_messages()
     final_result = []
@@ -49,7 +48,7 @@ def get_messages():
         final_item = {}
 
         for item in range(len(items_in_result)):
-            final_item[items_in_result[item]] = result[0]
+            final_item[items_in_result[item]] = result[item]
 
         final_result.append(final_item)
 
