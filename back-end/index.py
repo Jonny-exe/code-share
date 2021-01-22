@@ -5,6 +5,8 @@ import tensor_funcs as tensor_f
 import db
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
+# from numpy import concatenate
+import numpy as np
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -59,6 +61,18 @@ def get_messages():
 
         final_result.append(final_item)
 
+    final_order = [[], [], []]
+
+    for message in final_result:
+        group = tensor_f.predict_message({"likes": 1, "message_length": 20})
+        final_order[group].append(message)
+
+    final_result = []
+    for i in range(3):
+        for item in final_order[i]:
+            print(item)
+            final_result.append(item)
+
     return {"messages": final_result}
 
 
@@ -66,11 +80,9 @@ def get_messages():
 @cross_origin()
 def add_like():
     req = request.get_json(force=True)
-    print("req: ", req)
     id = req["id"]
-    newLikes = db.get_current_likes(id) + 1
-    print(newLikes)
-    db.add_like(id, newLikes)
+    new_likes = db.get_current_likes(id) + 1
+    db.add_like(new_likes, id)
     return {"status": 200}
 
 
@@ -83,8 +95,7 @@ def did_give_like():
         csv_values = make_messages_into_csv_values(message["message"])
         csv_f.add_row(csv_values)
 
-    final_item = tensor_f.predict_message({"likes": 1, "message_length": 20})
-    return {"status": 200, "HI": final_item}
+    return {"status": 200}
 
 
 def make_messages_into_csv_values(message):

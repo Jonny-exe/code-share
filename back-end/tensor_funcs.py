@@ -1,12 +1,30 @@
-# from __future__ import absolute_import, division, print_function, unicode_literals
 import pandas as pd
 import tensorflow as tf
+
+
+def get_classifier():
+    my_feature_columns = []
+    NUMERIC_COLUMNS = ["message_length", "likes"]
+    # CATEGORICAL_COLUMNS = []
+
+    for feature_name in NUMERIC_COLUMNS:
+        my_feature_columns.append(
+            tf.feature_column.numeric_column(key=feature_name, dtype=tf.int8)
+        )
+
+    classifier = tf.estimator.DNNClassifier(
+        feature_columns=my_feature_columns,
+        hidden_units=[30, 10],
+        n_classes=2,
+        model_dir="./classifier",
+    )
+    return classifier
 
 
 def predict_message(predict):
     RESULTS = ["terrible", "bad", "good"]
 
-    classifier = train_messages()
+    classifier = get_classifier()
     print("GOT classifier")
 
     for key in predict.keys():
@@ -25,13 +43,11 @@ def predict_message(predict):
         print(
             'Prediction is "{}" ({:.1f}%)'.format(RESULTS[class_id], 100 * probability)
         )
-        return RESULTS[class_id]
+        print("Result: ", RESULTS[class_id])
+        return class_id
 
 
 def train_messages():
-    my_feature_columns = []
-
-    # file = open("/home/a/Documents/GitHub/code-share/back-end/test1.csv")
     file_path = "/home/a/Documents/GitHub/code-share/back-end/test1.csv"
     train = pd.read_csv(file_path)
     test = pd.read_csv(file_path)
@@ -39,30 +55,7 @@ def train_messages():
     train_y = train.pop("group")
     test_y = test.pop("group")
 
-    NUMERIC_COLUMNS = ["message_length", "likes"]
-    # CATEGORICAL_COLUMNS = []
-
-    for feature_name in NUMERIC_COLUMNS:
-        my_feature_columns.append(
-            tf.feature_column.numeric_column(key=feature_name, dtype=tf.int8)
-        )
-
-    # for feature_name in CATEGORICAL_COLUMNS:
-    #     vocabulary = train[feature_name].unique()
-    #     print("Vocabulary: ", vocabulary)
-    #     categorical_column = tf.feature_column.categorical_column_with_vocabulary_list(
-    #         key=feature_name,
-    #         vocabulary_list=vocabulary,
-    #         dtype=tf.string,
-    #         default_value=-1,
-    #         num_oov_buckets=0,
-    #     )
-    #     # These must be wrapped
-    #     # https://stackoverflow.com/questions/48614819/
-    #     # items-of-feature-columns-must-be-a-featurecolumn-given-vocabularylistcategori
-    #     my_feature_columns.append(
-    #         tf.feature_column.indicator_column(categorical_column)
-    #     )
+    classifier = get_classifier()
 
     def input_fn(features, labels, training=True, batch_size=256):
         # Convert the inputs to a Dataset.
@@ -73,13 +66,6 @@ def train_messages():
             dataset = dataset.shuffle(1000).repeat()
 
         return dataset.batch(batch_size)
-
-    classifier = tf.estimator.DNNClassifier(
-        feature_columns=my_feature_columns,
-        hidden_units=[30, 10],
-        n_classes=2,
-        model_dir="./classifier",
-    )
 
     def evaluate():
         eval_result = classifier.evaluate(

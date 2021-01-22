@@ -23,6 +23,7 @@ export const getMessages = async () => {
   }
   const response = await fetch(url + "get_messages", options)
   const json = await response.json()
+  console.log(json.messages)
   return json.messages
 }
 

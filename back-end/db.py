@@ -10,6 +10,7 @@ try:
         host="127.0.0.1",
         port=3306,
         database="code_share",
+        autocommit=True,
     )
 except mariadb.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}")
@@ -29,8 +30,12 @@ def get_messages():
     return cur.fetchall()
 
 
-def add_like(id, newLikes):
-    cur.execute("update messages set likes=? where id=?", (newLikes, id))
+def add_like(new_likes, id):
+    print(new_likes, id)
+    query = f"update messages set likes={new_likes} where id={id}"
+    print(query)
+    cur.execute(query)
+    # conn.commit()
 
 
 def get_current_files(id):
@@ -40,4 +45,4 @@ def get_current_files(id):
 
 def insert_message(text):
     cur.execute("insert into messages(text,likes) values(?,?)", (text, 0))
-    conn.commit()
+    # conn.commit()
