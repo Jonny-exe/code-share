@@ -1,5 +1,6 @@
 # hello.py
 import csv_funcs as csv_f
+
 # import tensor_funcs as tensor_f
 import db
 from flask import Flask, jsonify, request
@@ -7,6 +8,16 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors = CORS(app)
+
+
+
+
+
+
+
+
+
+
 
 
 @app.route("/")
@@ -39,7 +50,7 @@ def insert_message():
     req = request.get_json(force=True)
     print("req: ", request.get_json())
     if req is None:
-        return {'status': 500}
+        return {"status": 500}
     db.insert_message(req["text"])
     return {"status": 200}
 
@@ -66,8 +77,8 @@ def get_messages():
 def add_like():
     req = request.get_json(force=True)
     print("req: ", req)
-    id = req['id']
+    id = req["id"]
     newLikes = db.get_current_likes(id) + 1
     print(newLikes)
     db.add_like(id, newLikes)
-    return {'status': 200}
+    return {"status": 200}

@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pandas as pd
 import tensorflow as tf
 
+
 def predict_message(predict):
     RESULTS = ["notDead", "dead"]
 
@@ -56,7 +57,6 @@ def train_messages():
             tf.feature_column.indicator_column(categorical_column)
         )
 
-
     def input_fn(features, labels, training=True, batch_size=256):
         # Convert the inputs to a Dataset.
         dataset = tf.data.Dataset.from_tensor_slices((dict(features), labels))
@@ -71,7 +71,7 @@ def train_messages():
         feature_columns=my_feature_columns,
         hidden_units=[30, 10],
         n_classes=2,
-        model_dir='./classifier'
+        model_dir="./classifier",
     )
 
     def evaluate():
@@ -88,4 +88,4 @@ def train_messages():
     return classifier
 
 
-predict_message({"status": [1], "type":[0], "color":["blue"]})
+predict_message({"status": [1], "type": [0], "color": ["blue"]})
