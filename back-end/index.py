@@ -1,23 +1,13 @@
 # hello.py
 import csv_funcs as csv_f
 
-# import tensor_funcs as tensor_f
+import tensor_funcs as tensor_f
 import db
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors = CORS(app)
-
-
-
-
-
-
-
-
-
-
 
 
 @app.route("/")
@@ -82,3 +72,34 @@ def add_like():
     print(newLikes)
     db.add_like(id, newLikes)
     return {"status": 200}
+
+
+@app.route("/did_give_like", methods=["POST"])
+@cross_origin()
+def did_give_like():
+    req = request.get_json(force=True)
+    print(req["messages"])
+    for message in req["messages"]:
+        csv_values = make_messages_into_csv_values(message["message"])
+        csv_f.add_row(csv_values)
+
+    final_item = tensor_f.predict_message({"likes": 1, "message_length": 20})
+    return {"status": 200, "HI": final_item}
+
+
+def make_messages_into_csv_values(message):
+    print(message)
+    final_values = {}
+    final_values["likes"] = message["likes"]
+    final_values["message_length"] = len(message["text"])
+
+    if message["did_give_like"] is False:
+        final_values["group"] = 0
+    elif message["time_to_like"] > 60:
+        final_values["group"] = 1
+    elif message["time_to_like"] > 30:
+        final_values["group"] = 2
+    else:
+        final_values["group"] = 2
+
+    return final_values

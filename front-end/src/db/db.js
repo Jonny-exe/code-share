@@ -39,4 +39,18 @@ export const addLike = async (messageId) => {
   return json
 }
 
+export const didGiveLike = async (messages, didGiveLike) => {
+  const body = {
+    messages: messages,
+    didGiveLike: didGiveLike,
+  }
+  const options = {
+    method: "POST",
+    body: JSON.stringify(body),
+  }
+  const response = await fetch(url + "did_give_like", options)
+  const json = await response.json()
+  return json
+}
+
 getMessages()

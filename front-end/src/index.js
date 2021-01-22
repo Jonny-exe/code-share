@@ -18,6 +18,10 @@ const sendMessage = async () => {
   await db.insertMessage(text)
 }
 
+const didGiveLike = () => {
+  db.didGiveLike()
+}
+
 const init = async () => {
   setButtonEventListeners()
   const messages = await db.getMessages()
