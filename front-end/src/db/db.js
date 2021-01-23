@@ -2,7 +2,11 @@ import * as env from "../../env.js"
 const url = `http://localhost:${env.SERVER_PORT}/`
 export const insertMessage = async (messageText) => {
   const body = {
-    text: messageText,
+    message: {
+      text: messageText,
+      likes: 0,
+      did_give_like: false,
+    },
   }
 
   const options = {
@@ -27,7 +31,7 @@ export const getMessages = async () => {
   return json.messages
 }
 
-export const addLike = async (messageId) => {
+export const addLike = async (messageId, messages) => {
   const body = {
     id: messageId,
   }
@@ -37,13 +41,13 @@ export const addLike = async (messageId) => {
   }
   const response = await fetch(url + "add_like", options)
   const json = await response.json()
+  didGiveLike(messages, true)
   return json
 }
 
 export const didGiveLike = async (messages, didGiveLike) => {
   const body = {
     messages: messages,
-    didGiveLike: didGiveLike,
   }
   const options = {
     method: "POST",

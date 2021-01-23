@@ -1,11 +1,16 @@
 // import * as consts from "./consts/consts.js"
 import * as db from "./db/db.js"
+
+let time = 0
+setInterval(() => time++, 1000)
+
 export const renderMessages = (items) => {
   const createMessages = () => {
     let messages = ""
     items.forEach((item) => {
-      const messageButtons = `<div class='messageButtonsWrapper'><button class='messageButtons' id="message${item.id}"> ${item.likes} </button></div>`
-      let message = `<div class="message"><p>${item.text}</p> ${messageButtons} </div>`
+      let messageItem = item.message
+      const messageButtons = `<div class='messageButtonsWrapper'><button class='messageButtons' id="message${messageItem.id}"> ${messageItem.likes} </button></div>`
+      let message = `<div class="message"><p>${messageItem.text}</p> ${messageButtons} </div>`
       messages += message
     })
     return messages
@@ -14,13 +19,16 @@ export const renderMessages = (items) => {
   const restoreEventListners = (target) => {
     items.forEach((item) => {
       // Remove incase it already has one
-      let id = `#message${item.id}`
-      $(id).removeEventListener("click", () => db.addLike(item.id))
-      $(id).addEventListener("click", () => db.addLike(item.id))
+      let messageItem = item.message
+      let id = `#message${messageItem.id}`
+      $(id).removeEventListener("click", () => like(messageItem, items))
+      $(id).addEventListener("click", () => like(messageItem, items))
     })
 
-    const like = async (id) => {
-      await db.addLike(id)
+    const like = (item, items) => {
+      let id = item.id
+      item.timeToLike = time
+      db.addLike(id, items)
     }
   }
 

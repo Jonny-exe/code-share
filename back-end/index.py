@@ -1,12 +1,10 @@
-# hello.py
+# index.py
+from flask_cors import CORS, cross_origin
+from flask import Flask, jsonify, request
+import db
 import csv_funcs as csv_f
 
 import tensor_funcs as tensor_f
-import db
-from flask import Flask, jsonify, request
-from flask_cors import CORS, cross_origin
-# from numpy import concatenate
-import numpy as np
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -26,6 +24,10 @@ def add_income():
     return json, 200
 
 
+def hello():
+    print("Hello")
+
+
 @app.route("/get_current_likes", methods=["POST"])
 @cross_origin()
 def get_current_likes():
@@ -43,7 +45,10 @@ def insert_message():
     print("req: ", request.get_json())
     if req is None:
         return {"status": 500}
-    db.insert_message(req["text"])
+
+    predict_values = make_messages_into_csv_values(req["message"])
+    quality_prediction = tensor_f.predict_message(predict_values)
+    db.insert_message(req["message"], quality_prediction)
     return {"status": 200}
 
 
@@ -54,24 +59,15 @@ def get_messages():
     final_result = []
     items_in_result = ["text", "likes", "id"]
     for result in db_result:
-        final_item = {}
+        ordered_item = {}
 
         for item in range(len(items_in_result)):
-            final_item[items_in_result[item]] = result[item]
+            ordered_item[items_in_result[item]] = result[item]
+            final_item = {
+                "message": ordered_item
+            }
 
         final_result.append(final_item)
-
-    final_order = [[], [], []]
-
-    for message in final_result:
-        group = tensor_f.predict_message({"likes": 1, "message_length": 20})
-        final_order[group].append(message)
-
-    final_result = []
-    for i in range(3):
-        for item in final_order[i]:
-            print(item)
-            final_result.append(item)
 
     return {"messages": final_result}
 
@@ -99,17 +95,20 @@ def did_give_like():
 
 
 def make_messages_into_csv_values(message):
-    print(message)
     final_values = {}
     final_values["likes"] = message["likes"]
     final_values["message_length"] = len(message["text"])
 
-    if message["did_give_like"] is False:
+    if "time_to_like" in message:
+        time_to_like = message["time_to_like"]
+    else:
         final_values["group"] = 0
-    elif message["time_to_like"] > 60:
+        return final_values
+
+    if time_to_like == -1:
+        final_values["group"] = 0
+    elif time_to_like > 120:
         final_values["group"] = 1
-    elif message["time_to_like"] > 30:
-        final_values["group"] = 2
     else:
         final_values["group"] = 2
 

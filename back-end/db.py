@@ -1,23 +1,15 @@
 # db.py
 import sys
 import mariadb
+import setup_db
 
 # Connect to MariaDB Platform
-try:
-    conn = mariadb.connect(
-        user="code-share",
-        password="password",
-        host="127.0.0.1",
-        port=3306,
-        database="code_share",
-        autocommit=True,
-    )
-except mariadb.Error as e:
-    print(f"Error connecting to MariaDB Platform: {e}")
-    sys.exit(1)
 
 # Get Cursor
-cur = conn.cursor()
+cur = setup_db.cur
+setup_db.create_db()
+setup_db.create_table()
+print("HELLO")
 
 
 def get_current_likes(id):
@@ -26,7 +18,8 @@ def get_current_likes(id):
 
 
 def get_messages():
-    cur.execute("select text, likes, id from messages order by id desc limit 30")
+    cur.execute(
+        "select text, likes, id from messages order by quality desc limit 30")
     return cur.fetchall()
 
 
@@ -43,6 +36,7 @@ def get_current_files(id):
     return cur.fetchone()[0]
 
 
-def insert_message(text):
-    cur.execute("insert into messages(text,likes) values(?,?)", (text, 0))
-    # conn.commit()
+def insert_message(message, quality):
+    print(type(quality))
+    cur.execute("insert into messages(text,likes,quality) values(?, ?, ?)",
+                (message["text"], 0, quality,))

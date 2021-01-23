@@ -1,5 +1,6 @@
 import pandas as pd
 import tensorflow as tf
+import numpy as np
 
 
 def get_classifier():
@@ -25,13 +26,11 @@ def predict_message(predict):
     RESULTS = ["terrible", "bad", "good"]
 
     classifier = get_classifier()
-    print("GOT classifier")
 
     for key in predict.keys():
         predict[key] = [predict[key]]
 
     def input_fn(features):
-        print(features)
         # Convert the inputs to a Dataset without labels.
         return tf.data.Dataset.from_tensor_slices(dict(features)).batch(256)
 
@@ -41,10 +40,12 @@ def predict_message(predict):
         class_id = pred_dict["class_ids"][0]
         probability = pred_dict["probabilities"][class_id]
         print(
-            'Prediction is "{}" ({:.1f}%)'.format(RESULTS[class_id], 100 * probability)
+            'Prediction is "{}" \
+            ({:.1f}%)'.format(RESULTS[class_id], 100 * probability)
         )
         print("Result: ", RESULTS[class_id])
-        return class_id
+        result = class_id.item()
+        return result
 
 
 def train_messages():
@@ -79,6 +80,3 @@ def train_messages():
 
     evaluate()
     return classifier
-
-
-# predict_message({"status": [1], "type": [0], "color": ["blue"]})
