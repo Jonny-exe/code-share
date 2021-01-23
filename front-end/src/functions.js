@@ -16,7 +16,7 @@ export const renderMessages = (items) => {
     return messages
   }
 
-  const restoreEventListners = (target) => {
+  const restoreEventListners = () => {
     items.forEach((item) => {
       // Remove incase it already has one
       let messageItem = item.message

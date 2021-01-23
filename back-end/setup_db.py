@@ -25,7 +25,10 @@ def create_db():
 
 def create_table():
     cur.execute(
-        "CREATE TABLE IF NOT EXISTS messages (id int auto_increment PRIMARY KEY, text longtext, likes int(11), quality int(1))")
+        "CREATE TABLE IF NOT EXISTS messages \
+        (id int auto_increment PRIMARY KEY,\
+         text longtext, likes int(11), quality int(1))"
+    )
 
 
 create_db()

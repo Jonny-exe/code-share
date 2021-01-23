@@ -41,7 +41,9 @@ def predict_message(predict):
         probability = pred_dict["probabilities"][class_id]
         print(
             'Prediction is "{}" \
-            ({:.1f}%)'.format(RESULTS[class_id], 100 * probability)
+            ({:.1f}%)'.format(
+                RESULTS[class_id], 100 * probability
+            )
         )
         print("Result: ", RESULTS[class_id])
         result = class_id.item()
