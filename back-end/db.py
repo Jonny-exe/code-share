@@ -38,5 +38,22 @@ def get_current_files(id):
 
 def insert_message(message, quality):
     print(type(quality))
-    cur.execute("insert into messages(text,likes,quality) values(?, ?, ?)",
-                (message["text"], 0, quality,))
+    cur.execute(
+        "insert into messages(text,likes,quality) values(?, ?, ?)",
+        (
+            message["text"],
+            0,
+            quality,
+        ),
+    )
+
+
+def get_message(id):
+    cur.execute(
+        "select text, likes from messages where id = ?", (id,))
+    return cur.fetchone()
+
+
+def update_prediction(new_quality, id):
+    cur.execute(
+        "update messages set quality = ? where id = ?", (new_quality, id,))

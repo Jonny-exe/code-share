@@ -63,9 +63,7 @@ def get_messages():
 
         for item in range(len(items_in_result)):
             ordered_item[items_in_result[item]] = result[item]
-            final_item = {
-                "message": ordered_item
-            }
+            final_item = {"message": ordered_item}
 
         final_result.append(final_item)
 
@@ -79,6 +77,10 @@ def add_like():
     id = req["id"]
     new_likes = db.get_current_likes(id) + 1
     db.add_like(new_likes, id)
+    liked_message = db.get_message(id)
+    predict_values = make_predict_values(liked_message)
+    predict_quality = tensor_f.predict_message(predict_values)
+    db.update_prediction(predict_quality, id)
     return {"status": 200}
 
 
@@ -102,14 +104,22 @@ def make_messages_into_csv_values(message):
     if "time_to_like" in message:
         time_to_like = message["time_to_like"]
     else:
-        final_values["group"] = 0
+        final_values["quality"] = 0
         return final_values
 
     if time_to_like == -1:
-        final_values["group"] = 0
+        final_values["quality"] = 0
     elif time_to_like > 120:
-        final_values["group"] = 1
+        final_values["quality"] = 1
     else:
-        final_values["group"] = 2
+        final_values["quality"] = 2
 
     return final_values
+
+
+def make_predict_values(liked_message):
+    result = {
+        "message_length": len(liked_message[0]),
+        "likes": liked_message[1]
+    }
+    return result
