@@ -48,7 +48,8 @@ def insert_message(message, quality):
 
 
 def get_message(id):
-    cur.execute("select text, likes from messages where id = ?", (id,))
+    cur.execute(
+        "select text, likes from messages where id = ?", (id,))
     return cur.fetchone()
 
 

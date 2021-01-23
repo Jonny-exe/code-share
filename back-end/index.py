@@ -118,5 +118,8 @@ def make_messages_into_csv_values(message):
 
 
 def make_predict_values(liked_message):
-    result = {"message_length": len(liked_message[0]), "likes": liked_message[1]}
+    result = {
+        "message_length": len(liked_message[0]),
+        "likes": liked_message[1]
+    }
     return result
