@@ -18,7 +18,7 @@ export const insertMessage = async (messageText) => {
   }
   const response = await fetch(url + "insert_message", options)
   const json = await response.json()
-  return json
+  return json.messages
 }
 
 export const getMessages = async () => {

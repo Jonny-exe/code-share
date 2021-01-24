@@ -49,7 +49,8 @@ def insert_message():
     predict_values = make_messages_into_csv_values(req["message"])
     quality_prediction = tensor_f.predict_message(predict_values)
     db.insert_message(req["message"], quality_prediction)
-    return {"status": 200}
+    new_messages = get_messages()
+    return new_messages
 
 
 @app.route("/get_messages")

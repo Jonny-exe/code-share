@@ -14,7 +14,9 @@ const setButtonEventListeners = () => {
 
 const sendMessage = async () => {
   const text = functions.$("textarea.sendMessageInputs").value
-  await db.insertMessage(text)
+  const newMessages = await db.insertMessage(text)
+  console.log(newMessages)
+  functions.renderMessages(newMessages)
 }
 
 const init = async () => {
