@@ -1,6 +1,5 @@
 import * as db from "./db/db.js"
 import * as functions from "./functions.js"
-
 const setButtonEventListeners = () => {
   const buttons = document.querySelectorAll("button")
   buttons.forEach((item) => {
@@ -16,10 +15,6 @@ const setButtonEventListeners = () => {
 const sendMessage = async () => {
   const text = functions.$("textarea.sendMessageInputs").value
   await db.insertMessage(text)
-}
-
-const didGiveLike = () => {
-  db.didGiveLike()
 }
 
 const init = async () => {

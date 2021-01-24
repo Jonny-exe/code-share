@@ -81,14 +81,14 @@ def add_like():
     predict_values = make_predict_values(liked_message)
     predict_quality = tensor_f.predict_message(predict_values)
     db.update_prediction(predict_quality, id)
-    return {"status": 200}
+    new_messages = get_messages()
+    return new_messages
 
 
 @app.route("/did_give_like", methods=["POST"])
 @cross_origin()
 def did_give_like():
     req = request.get_json(force=True)
-    print(req["messages"])
     for message in req["messages"]:
         csv_values = make_messages_into_csv_values(message["message"])
         csv_f.add_row(csv_values)
@@ -106,7 +106,7 @@ def make_messages_into_csv_values(message):
     else:
         final_values["quality"] = 0
         return final_values
-
+    # time_to_likes = -1 means it hasn't been liked
     if time_to_like == -1:
         final_values["quality"] = 0
     elif time_to_like > 120:
@@ -118,8 +118,5 @@ def make_messages_into_csv_values(message):
 
 
 def make_predict_values(liked_message):
-    result = {
-        "message_length": len(liked_message[0]),
-        "likes": liked_message[1]
-    }
+    result = {"message_length": len(liked_message[0]), "likes": liked_message[1]}
     return result

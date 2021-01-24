@@ -1,10 +1,19 @@
 // import * as consts from "./consts/consts.js"
 import * as db from "./db/db.js"
 
+let currentMessages
 let time = 0
-setInterval(() => time++, 1000)
+setInterval(() => manageTime, 1000)
+const manageTime = () => {
+  time++
+  if (time > 360) {
+    db.didGiveLike(messages)
+  }
+}
 
 export const renderMessages = (items) => {
+  // I declare it so I dont have to make a request
+  currentMessages = items
   const createMessages = () => {
     let messages = ""
     items.forEach((item) => {
@@ -25,10 +34,11 @@ export const renderMessages = (items) => {
       $(id).addEventListener("click", () => like(messageItem, items))
     })
 
-    const like = (item, items) => {
+    const like = async (item, items) => {
       let id = item.id
       item.timeToLike = time
-      db.addLike(id, items)
+      const newMessages = await db.addLike(id, items)
+      renderMessages(newMessages)
     }
   }
 

@@ -18,7 +18,8 @@ def get_current_likes(id):
 
 
 def get_messages():
-    cur.execute("select text, likes, id from messages order by quality desc limit 30")
+    cur.execute(
+        "select text, likes, id from messages order by quality desc limit 30")
     return cur.fetchall()
 
 
@@ -48,8 +49,7 @@ def insert_message(message, quality):
 
 
 def get_message(id):
-    cur.execute(
-        "select text, likes from messages where id = ?", (id,))
+    cur.execute("select text, likes from messages where id = ?", (id,))
     return cur.fetchone()
 
 

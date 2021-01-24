@@ -27,7 +27,6 @@ export const getMessages = async () => {
   }
   const response = await fetch(url + "get_messages", options)
   const json = await response.json()
-  console.log(json.messages)
   return json.messages
 }
 
@@ -42,10 +41,10 @@ export const addLike = async (messageId, messages) => {
   const response = await fetch(url + "add_like", options)
   const json = await response.json()
   didGiveLike(messages, true)
-  return json
+  return json.messages
 }
 
-export const didGiveLike = async (messages, didGiveLike) => {
+export const didGiveLike = async (messages) => {
   const body = {
     messages: messages,
   }
@@ -57,5 +56,3 @@ export const didGiveLike = async (messages, didGiveLike) => {
   const json = await response.json()
   return json
 }
-
-getMessages()
