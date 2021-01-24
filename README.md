@@ -4,4 +4,5 @@
 # To make this I use:
   - Simple js/html
   - Python and tensorflow
+  - MariaDB
 
